@@ -90,7 +90,7 @@ short_llvm_commit="$(cut -c-8 <<< "$llvm_commit")"
 popd || exit
 
 llvm_commit_url="https://github.com/llvm/llvm-project/commit/$short_llvm_commit"
-binutils_ver="$(ls ./*binutils-* | sed "s/binutils-//g")"
+binutils_ver="$(ls | grep "^binutils-" | sed "s/binutils-//g")"
 clang_version="$(install/bin/clang --version | head -n1 | cut -d' ' -f4)"
 
 tg_post_msg "<b>Azure clang compilation Finished</b>%0A<b>Clang Version : </b><code>$clang_version</code>%0A<b>LLVM Commit : </b><code>$llvm_commit_url</code>%0A<b>Binutils Version : </b><code>$binutils_ver</code>"
