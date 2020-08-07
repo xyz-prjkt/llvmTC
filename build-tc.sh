@@ -10,7 +10,7 @@ err() {
 }
 
 # Set Chat ID, to push Notifications
-CHATID="-1001232545787"
+CHATID="-1001231303646"
 
 # Set a directory
 DIR="$(pwd ...)"
