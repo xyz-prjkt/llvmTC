@@ -191,6 +191,13 @@ def parse_parameters(root_folder):
                         Add -march=ARCH and -mtune=ARCH to CFLAGS to further optimize the toolchain for the
                         target host processor.
 
+                        Supported CPU values are -  nocona, core2, penryn, bonnell, atom, silvermont, slm,
+                        goldmont, goldmont-plus, tremont, nehalem, corei7, westmere, sandybridge, corei7-avx,
+                        ivybridge, core-avx-i, haswell, core-avx2, broadwell, skylake, skylake-avx512, skx,
+                        cascadelake, cooperlake, cannonlake, icelake-client, icelake-server, tigerlake, knl,
+                        knm, k8, athlon64, athlon-fx, opteron, k8-sse3, athlon64-sse3, opteron-sse3, amdfam10,
+                        barcelona, btver1, btver2, bdver1, bdver2, bdver3, bdver4, znver1, znver2, x86-64
+
                         """),
                         type=str)
     parser.add_argument("-n",
