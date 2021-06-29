@@ -72,8 +72,7 @@ tg_post_msg "<code>Building LLVM</code>"
 	--targets "ARM;AArch64" \
 	--shallow-clone \
 	--incremental \
-	--pgo \
-	--lto full \
+	--pgo kernel-defconfig \
 	--build-type "Release" 2>&1 | tee build.log
 
 # Check if the final clang binary exists or not.
