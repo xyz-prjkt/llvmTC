@@ -50,7 +50,6 @@ tg_post_msg "<code>Building LLVM</code>"
 	--targets "ARM;AArch64" \
 	--shallow-clone \
 	--incremental \
-	--pgo kernel-defconfig \
 	--build-type "Release" 2>&1 | tee build.log
 
 # Check if the final clang binary exists or not.
@@ -95,8 +94,8 @@ build_gcc () {
                      --with-gnu-as \
                      --with-gnu-ld \
                      --with-sysroot
-    make CFLAGS="-flto -O3 -pipe -ffunction-sections -fdata-sections" CXXFLAGS="-O3 -pipe -ffunction-sections -fdata-sections" all-gcc -j$(nproc --all)
-    make CFLAGS="-flto -O3 -pipe -ffunction-sections -fdata-sections" CXXFLAGS="-O3 -pipe -ffunction-sections -fdata-sections" all-target-libgcc -j$(nproc --all)
+    make CFLAGS="-O3 -pipe -ffunction-sections -fdata-sections" CXXFLAGS="-O3 -pipe -ffunction-sections -fdata-sections" all-gcc -j$(nproc --all)
+    make CFLAGS="-O3 -pipe -ffunction-sections -fdata-sections" CXXFLAGS="-O3 -pipe -ffunction-sections -fdata-sections" all-target-libgcc -j$(nproc --all)
     make install-gcc -j$(nproc --all)
     make install-target-libgcc -j$(nproc --all)
 }
