@@ -149,8 +149,11 @@ def invoke_configure(build_folder, install_folder, root_folder, target,
     """
     configure = [
         root_folder.joinpath(utils.current_binutils(), "configure").as_posix(),
-        '--prefix=%s' % install_folder.as_posix(),
-        '--enable-deterministic-archives', '--enable-plugins', '--quiet'
+        'CC=gcc', 'CXX=g++', '--disable-compressed-debug-sections',
+        '--disable-gdb', '--disable-werror', '--enable-deterministic-archives',
+        '--enable-new-dtags', '--enable-plugins', '--enable-threads',
+        '--prefix=%s' % install_folder.as_posix(), '--quiet',
+        '--with-system-zlib'
     ]
     if host_arch:
         configure += [
@@ -163,49 +166,29 @@ def invoke_configure(build_folder, install_folder, root_folder, target,
     configure_arch_flags = {
         "arm-linux-gnueabi": [
             '--disable-multilib', '--disable-nls', '--with-gnu-as',
-            '--with-gnu-ld',
-            '--with-sysroot=%s' % install_folder.joinpath(target).as_posix()
+            '--with-gnu-ld'
         ],
-        "mips-linux-gnu": [
-            '--disable-compressed-debug-sections', '--enable-new-dtags',
-            '--enable-shared',
-            '--enable-targets=mips64-linux-gnuabi64,mips64-linux-gnuabin32',
-            '--enable-threads'
-        ],
-        "mipsel-linux-gnu": [
-            '--disable-compressed-debug-sections', '--enable-new-dtags',
-            '--enable-shared',
-            '--enable-targets=mips64el-linux-gnuabi64,mips64el-linux-gnuabin32',
-            '--enable-threads'
-        ],
-        "powerpc-linux-gnu": [
-            '--enable-lto', '--enable-relro', '--enable-shared',
-            '--enable-threads', '--disable-gdb', '--disable-sim',
-            '--disable-werror', '--with-pic', '--with-system-zlib'
-        ],
-        "riscv64-linux-gnu": [
-            '--enable-lto', '--enable-relro', '--enable-shared',
-            '--enable-threads', '--disable-sim', '--disable-werror',
-            '--with-pic', '--with-system-zlib'
-        ],
-        "s390x-linux-gnu": [
-            '--enable-lto', '--enable-relro', '--enable-shared',
-            '--enable-targets=s390-linux-gnu', '--enable-threads',
-            '--disable-gdb', '--disable-werror', '--with-pic',
-            '--with-system-zlib'
-        ],
-        "x86_64-linux-gnu": [
-            '--enable-lto', '--enable-relro', '--enable-shared',
-            '--enable-targets=x86_64-pep', '--enable-threads', '--disable-gdb',
-            '--disable-werror', '--with-pic', '--with-system-zlib'
-        ]
+        "powerpc-linux-gnu":
+        ['--disable-sim', '--enable-lto', '--enable-relro', '--with-pic'],
     }
     configure_arch_flags['aarch64-linux-gnu'] = configure_arch_flags[
-        'arm-linux-gnueabi'] + ['--enable-ld=default', '--enable-gold']
+        'arm-linux-gnueabi'] + ['--enable-gold', '--enable-ld=default']
     configure_arch_flags['powerpc64-linux-gnu'] = configure_arch_flags[
         'powerpc-linux-gnu']
     configure_arch_flags['powerpc64le-linux-gnu'] = configure_arch_flags[
         'powerpc-linux-gnu']
+    configure_arch_flags['riscv64-linux-gnu'] = configure_arch_flags[
+        'powerpc-linux-gnu']
+    configure_arch_flags['s390x-linux-gnu'] = configure_arch_flags[
+        'powerpc-linux-gnu'] + ['--enable-targets=s390-linux-gnu']
+    configure_arch_flags['x86_64-linux-gnu'] = configure_arch_flags[
+        'powerpc-linux-gnu'] + ['--enable-targets=x86_64-pep']
+
+    for endian in ["", "el"]:
+        configure_arch_flags['mips%s-linux-gnu' % (endian)] = [
+            '--enable-targets=mips64%s-linux-gnuabi64,mips64%s-linux-gnuabin32'
+            % (endian, endian)
+        ]
 
     configure += configure_arch_flags.get(target, [])
 

@@ -20,6 +20,7 @@ These scripts have been tested in a Docker image of the following distributions,
 
   ```
   apt install bc \
+              binutils-dev \
               bison \
               ca-certificates \
               ccache \
@@ -48,6 +49,7 @@ These scripts have been tested in a Docker image of the following distributions,
 
   ```
   dnf install bc \
+              binutils-devel \
               bison \
               ccache \
               clang \
@@ -68,23 +70,59 @@ These scripts have been tested in a Docker image of the following distributions,
               zlib-devel
   ```
 
-* ### Arch Linux
+* ### Arch Linux / Manjaro
 
   ```
   pacman -S base-devel \
+            bc \
             bison \
             ccache \
             clang \
+            cpio \
             cmake \
             flex \
             git \
             libelf \
             lld \
+            llvm \
             ninja \
             openssl \
             python3 \
             uboot-tools
   ```
+
+* ### Clear Linux
+
+  ```
+  swupd bundle-add c-basic \
+                   ccache \
+                   curl \
+                   dev-utils \
+                   devpkg-elfutils \
+                   devpkg-openssl \
+                   git \
+                   python3-basic \
+                   which
+  ```
+
+  Additionally, to build PowerPC kernels, you will need to build the U-Boot tools because there is no distribution package. The U-Boot tarballs can be found [here](https://ftp.denx.de/pub/u-boot/) and they can be built and used like so:
+
+  ```
+  $ curl -LSs https://ftp.denx.de/pub/u-boot/u-boot-2021.01.tar.bz2 | tar -xjf -
+  $ cd u-boot-2021.01
+  $ make -j"$(nproc)" defconfig tools-all
+  ...
+  $ sudo install -Dm755 tools/mkimage /usr/local/bin/mkimage
+  $ mkimage -V
+  mkimage version 2021.01
+  ```
+
+  Lastly, Clear Linux has `${CC}`, `${CXX}`, `${CFLAGS}`, and `${CXXFLAGS}` in the environment, which messes with the heuristics of the script for selecting a compiler. By default, the script will attempt to use `clang` and `ld.lld` but the environment's value of `${CC}` and `${CXX}` is respected first so `gcc` and `g++` will be used. Clear Linux has optimized their `gcc` and `g++` so this is fine but if you would like to use `clang` and `clang++` instead, invoke the script like so:
+
+  ```
+  $ CC=clang CFLAGS= CXX=clang++ CXXFLAGS= ./build-llvm.py ...
+  ```
+
 
 Python 3.5.3+ is recommended, as that is what the script has been tested against. These scripts should be distribution agnostic. Please feel free to add different distribution install commands here through a pull request.
 
@@ -107,6 +145,18 @@ bfd plugin: LLVM gold plugin has failed to create LTO module: Unknown attribute 
 ```
 
 Having a standalone copy of binutils (ideally in the same folder at the LLVM toolchain so that only one `PATH` modification is needed) works around this without any adverse side effects. Another workaround is bind mounting the new `LLVMgold.so` to `/usr/lib/LLVMgold.so`.
+
+## Contributing
+
+This repository openly welcomes pull requests! There are a few presubmit checks that run to make sure the code stays consistently formatted and free of bugs.
+
+1. All Python files must be passed through [`yapf`](https://github.com/google/yapf). See the installation section for how to get it (it may also be available through your package manager).
+
+2. All shell files must be passed through [`shfmt`](https://github.com/mvdan/sh) (specifically `shfmt -ci -i 4 -w`) and emit no [`shellcheck`](https://github.com/koalaman/shellcheck) warnings.
+
+The presubmit checks will do these things for you and fail if the code is not formatted properly or has a shellcheck warning. Running these tools on the command line before submitting will make it easier to get your code merged.
+
+Additionally, please write a detailed commit message about why you are submitting your change.
 
 ## Getting help
 
