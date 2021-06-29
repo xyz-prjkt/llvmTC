@@ -1,0 +1,21 @@
+name: xRageChain Toolchain
+on: 
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download scripts
+        uses: actions/checkout@v2
+
+      - name: Deploy builder
+        env:
+          PACKET_TOKEN: ${{ secrets.PACKET_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          PACKET_SSH_KEY: ${{ secrets.PACKET_SSH_KEY }}
+          TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+          TG_TOKEN: ${{ secrets.TG_TOKEN }}
+          GIT_AUTHOR_NAME: ${{ secrets.GIT_AUTHOR_NAME }}
+          GIT_AUTHOR_EMAIL: ${{ secrets.GIT_AUTHOR_EMAIL }}
+        run: ./build-tc.sh
