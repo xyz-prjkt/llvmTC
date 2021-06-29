@@ -1,27 +1,5 @@
 #!/usr/bin/env bash
 
-sudo apt-get install -y --no-install-recommends \
-        bc \
-        bison \
-        ca-certificates \
-        clang \
-        cmake \
-        curl \
-        file \
-        flex \
-        gcc \
-        g++ \
-        git \
-        libelf-dev \
-        libssl-dev \
-        lld \
-        make \
-        ninja-build \
-        python3 \
-        texinfo \
-        xz-utils \
-        zlib1g-dev
-
 # Function to show an informational message
 msg() {
     echo -e "\e[1;32m$*\e[0m"
