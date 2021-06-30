@@ -104,7 +104,7 @@ rm -fr ./*
 cp -r ../install/* .
 git checkout README.md # keep this as it's not part of the toolchain itself
 git add .
-git commit -asm "Bump to $rel_date build
+git commit -asm "xRageChain: Bump to $rel_date build
 
 LLVM commit: $llvm_commit_url
 Clang Version: $clang_version
