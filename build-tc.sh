@@ -109,7 +109,7 @@ git commit -asm "xRageTC: Bump to $rel_date build
 LLVM commit: $llvm_commit_url
 Clang Version: $clang_version
 Binutils version: $binutils_ver
-Builder commit: https://github.com/xyz-prjkt/xRageChain-tc_build/commit/$builder_commit"
+Builder commit: https://github.com/xyz-prjkt/xRageTC_build/commit/$builder_commit"
 git push -f
 popd || exit
 tg_post_msg "<b>xRageTC: Toolchain pushed to <code>https://github.com/xyz-prjkt/xRageTC_build</code></b>"
