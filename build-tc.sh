@@ -53,6 +53,7 @@ tg_post_msg "<b>$LLVM_NAME: Building LLVM. . .</b>"
 	--clang-vendor "$LLVM_NAME" \
 	--projects "clang;lld;polly" \
 	--targets "ARM;AArch64" \
+	--lto thin \
 	--shallow-clone \
 	--incremental \
 	--build-type "Release" 2>&1 | tee build.log
