@@ -65,11 +65,6 @@ tg_post_msg "<b>$LLVM_NAME: Building LLVM. . .</b>"
 	exit 1
 }
 
-# Build binutils
-msg "$LLVM_NAME: Building binutils..."
-tg_post_msg "<b>$LLVM_NAME: Building Binutils. . .</b>"
-./build-binutils.py --targets arm aarch64
-
 # Remove unused products
 rm -fr install/include
 rm -f install/lib/*.a install/lib/*.la
@@ -95,7 +90,6 @@ short_llvm_commit="$(cut -c-8 <<< "$llvm_commit")"
 popd || exit
 
 llvm_commit_url="https://github.com/llvm/llvm-project/commit/$short_llvm_commit"
-binutils_ver="$(ls | grep "^binutils-" | sed "s/binutils-//g")"
 clang_version="$(install/bin/clang --version | head -n1 | cut -d' ' -f4)"
 
 tg_post_msg "<b>$LLVM_NAME: Toolchain compilation Finished</b>%0A<b>Clang Version : </b><code>$clang_version</code>%0A<b>LLVM Commit : </b><code>$llvm_commit_url</code>%0A<b>Binutils Version : </b><code>$binutils_ver</code>"
@@ -114,7 +108,6 @@ git commit -asm "$LLVM_NAME: Bump to $rel_date build
 
 LLVM commit: $llvm_commit_url
 Clang Version: $clang_version
-Binutils version: $binutils_ver
 Builder commit: https://$GH_PUSH_REPO_URL/commit/$builder_commit"
 git push -f
 popd || exit
