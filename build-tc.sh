@@ -111,4 +111,4 @@ Clang Version: $clang_version
 Builder commit: https://$GL_PUSH_REPO_URL/commit/$builder_commit"
 git push -f
 popd || exit
-tg_post_msg "<b>$LLVM_NAME: Toolchain pushed to <code>https://$GH_PUSH_REPO_URL</code></b>"
+tg_post_msg "<b>$LLVM_NAME: Toolchain pushed to <code>https://$GL_PUSH_REPO_URL</code></b>"
