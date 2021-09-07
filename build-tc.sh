@@ -98,7 +98,7 @@ tg_post_msg "<b>$LLVM_NAME: Toolchain compilation Finished</b>%0A<b>Clang Versio
 # Update Git repository
 git config --global user.name $GL_USERNAME
 git config --global user.email $GL_EMAIL
-git clone "https://$GL_USERNAME:$GL_TOKEN@$GL_PUSH_REPO_URL" rel_repo
+git clone "https://$GL_PUSH_REPO_URL" rel_repo
 pushd rel_repo || exit
 rm -fr ./*
 cp -r ../install/* .
@@ -109,6 +109,6 @@ git commit -asm "$LLVM_NAME: Bump to $rel_date build
 LLVM commit: $llvm_commit_url
 Clang Version: $clang_version
 Builder commit: https://$GL_PUSH_REPO_URL/commit/$builder_commit"
-git push -f
+git push "https://gitlab-ci-token:$GL_TOKEN@$GL_USERNAME/xragetc-clang.git" -f
 popd || exit
 tg_post_msg "<b>$LLVM_NAME: Toolchain pushed to <code>https://$GL_PUSH_REPO_URL</code></b>"
